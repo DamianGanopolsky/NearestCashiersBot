@@ -1,5 +1,5 @@
-from Model import NearestCashiers
+from Telegram import TelegramBot
+
 
 if __name__ == '__main__':
-    #TelegramBot.run()
-    NearestCashiers.run()
+    TelegramBot.run()
