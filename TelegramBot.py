@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import CallbackContext, Updater, CommandHandler, MessageHandler, Filters
 import telegram
-
+from LinkCommand import FilterLink
 
 updater = Updater(token='5164707904:AAFXOrlRZpT1FpfVHPP7ak4QYfC-kafWAvA', use_context=True)
 dispatcher = updater.dispatcher
@@ -21,6 +21,9 @@ def echo(update: Update, context: CallbackContext):
 def run():
     start_handler = CommandHandler('start', start)
     echo_handler =  MessageHandler(Filters.text & (~Filters.command), echo)
+    link_filter= FilterLink()
+    link_handler = MessageHandler(link_filter,link_filter.handlerLinkCommand)
+    dispatcher.add_handler(link_handler)
     dispatcher.add_handler(echo_handler)
     dispatcher.add_handler(start_handler)
     updater.start_polling()
