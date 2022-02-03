@@ -101,7 +101,7 @@ class Cashier:
         return self.name,self.address
 
     def calculateGeohash(self):
-        return geohash.encode(self.longitude,self.latitude,7)
+        return geohash.encode(self.latitude,self.longitude,7)
 
 class Map:
     def __init__(self):
@@ -142,11 +142,7 @@ def foo():
                 continue
 
             cashier = Cashier(row)
-
             geoMap.add_cashier(cashier);
-
-            print("CASHIER data:",cashier.getData())
-            #locations[geohash.encode(row[1],row[2],7)]= cashier
 
     print("ALl cashiers:",geoMap.print_all_cashiers())
 
