@@ -1,7 +1,6 @@
 import csv
 import telegram
 from geolib import geohash
-import math
 from ProximityHashes import get_geohashes_neighbours
 bot = telegram.Bot(token='5164707904:AAFXOrlRZpT1FpfVHPP7ak4QYfC-kafWAvA')
 
@@ -30,9 +29,7 @@ class Map:
     def add_cashier(self, cashier):
         print("New geohash:", cashier.calculate_geohash())
         self.locations.setdefault(cashier.calculate_geohash(), []).append(cashier)
-        # self.locations[cashier.calculateGeohash()]=cashier
         print("Cashier value now:", self.locations[cashier.calculate_geohash()])
-        # self.locations[cashier.calculateGeohash()].append(cashier)
 
     def get_nearest_cashiers(self, queryLatitude, queryLongitude):
         proximity_geohashes = get_geohashes_neighbours(queryLatitude, queryLongitude, 500, 7).split(",")
@@ -46,12 +43,15 @@ class Map:
                     if count >= 3:
                         return nearest_banks
 
+        if count == 0:
+            return "There are no banks nearby"
+
     def print_all_cashiers(self):
         for key, value in self.locations.items():
             print(key, value[0].get_data())
 
 
-def foo():
+def run():
     print(bot.get_me())
     updates = bot.get_updates()
     geo_map = Map()
@@ -77,4 +77,4 @@ def foo():
 
 
 if __name__ == '__main__':
-    foo()
+    run()
