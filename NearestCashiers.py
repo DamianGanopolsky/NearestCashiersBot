@@ -1,8 +1,9 @@
 import csv
-import telegram
+
 from geolib import geohash
 from ProximityHashes import get_geohashes_neighbours
-bot = telegram.Bot(token='5164707904:AAFXOrlRZpT1FpfVHPP7ak4QYfC-kafWAvA')
+
+#bot = telegram.Bot(token='5164707904:AAFXOrlRZpT1FpfVHPP7ak4QYfC-kafWAvA')
 
 
 
@@ -52,8 +53,8 @@ class Map:
 
 
 def run():
-    print(bot.get_me())
-    updates = bot.get_updates()
+    #print(bot.get_me())
+    #updates = bot.get_updates()
     geo_map = Map()
     with open('cajeros-automaticos.csv') as csv_file:
         csv_reader = csv.reader(csv_file)
@@ -74,7 +75,12 @@ def run():
             geo_map.add_cashier(cashier);
 
     print(geo_map.get_nearest_cashiers(-34.6050839250446, -58.3709757833981))
+    count=0
+    #while True:
+     #   count += 1
 
 
-if __name__ == '__main__':
-    run()
+
+
+
+

@@ -9,3 +9,5 @@ pip3.10 install python-telegram-bot
 
 pip3.10 install geolib
 
+pip3.10 install uvicorn
+
