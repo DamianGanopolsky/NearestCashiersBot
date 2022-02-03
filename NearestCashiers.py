@@ -113,6 +113,21 @@ class Map:
         #self.locations[cashier.calculateGeohash()]=cashier
         print("Cashier value now:",self.locations[cashier.calculateGeohash()])
         #self.locations[cashier.calculateGeohash()].append(cashier)
+
+    def get_nearest_cashiers(self,queryLatitude,queryLongitude):
+        proximityGeohashes= create_geohash(queryLatitude, queryLongitude, 500,7).split(",")
+        nearestBanks=[]
+        count=0
+        for proximityHash in proximityGeohashes:
+            if proximityHash in self.locations:
+                for bank in self.locations[proximityHash]:
+                    nearestBanks.append(bank.getData())
+                    count += 1
+                    if count >= 3:
+                        return nearestBanks
+
+        #print("List of geohashes:",proximityGeohashes.split(","))
+
     def print_all_cashiers(self):
         for key,value in self.locations.items():
             print(key,value[0].getData())
@@ -121,7 +136,7 @@ def foo():
 
     print(bot.get_me())
     updates= bot.get_updates()
-    print(updates[0])
+    #print(updates[0])
     geoMap = Map()
 
     #print(geohash.neighbours(geohash.encode(-58.3709017854754, -34.605812942035, 7)))
@@ -145,12 +160,13 @@ def foo():
             geoMap.add_cashier(cashier);
 
     print("ALl cashiers:",geoMap.print_all_cashiers())
+    print(geoMap.get_nearest_cashiers(-34.6050839250446, -58.3709757833981))
 
 if __name__ == '__main__':
-    print(create_geohash(-34.605812942035,-58.3709017854754,500,7))
+    #print(create_geohash(-34.605812942035,-58.3709017854754,500,7))
 
-    print(geohash.encode(-34.6050839250446, -58.3709757833981, 7))
+    #print(geohash.encode(-34.6050839250446, -58.3709757833981, 7))
 
 
-    print(geohash.encode(-34.61116298318, -58.387486522984, 7))
-    #foo()
+    #print(geohash.encode(-34.61116298318, -58.387486522984, 7))
+    foo()
