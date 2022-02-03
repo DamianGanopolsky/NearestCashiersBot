@@ -1,4 +1,3 @@
-from geolib import geohash
 from ProximityHashes import get_geohashes_neighbours
 
 
@@ -7,9 +6,7 @@ class Map:
         self.locations = {}
 
     def add_cashier(self, cashier):
-        print("New geohash:", cashier.calculate_geohash())
         self.locations.setdefault(cashier.calculate_geohash(), []).append(cashier)
-        print("Cashier value now:", self.locations[cashier.calculate_geohash()])
 
     def get_nearest_cashiers(self, queryLatitude, queryLongitude):
         proximity_geohashes = get_geohashes_neighbours(queryLatitude, queryLongitude, 500, 7).split(",")
@@ -25,7 +22,3 @@ class Map:
 
         if count == 0:
             return "There are no banks nearby"
-
-    def print_all_cashiers(self):
-        for key, value in self.locations.items():
-            print(key, value[0].get_data())
