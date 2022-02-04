@@ -3,13 +3,16 @@
 class ReplyFormatter:
 
     def nearest_banks_reply(self, nearestCashiers):
-        return ("Cashiers within 500m:\n Bank name: " + nearestCashiers[0][0] + ", Address:" +
-                                nearestCashiers[0][1] +"\n Bank name: " + nearestCashiers[1][0]
-                                 + ", Address:" + nearestCashiers[1][1] + "\n Bank name: " + nearestCashiers[2][0]
-                                 + ", Address:" + nearestCashiers[2][1])
+        reply = "Cashiers within 500m:"
+
+        for cashier in nearestCashiers:
+            reply += "\n\n Bank name: " + cashier[0] + "\n Address: " + cashier[1]
+
+        return reply
+
 
     def image_link_reply(self, usersPosition, nearestCashiers):
-        link = "https://maps.googleapis.com/maps/api/staticmap?zoom=14&size=600x300&maptype=roadmap&markers=color:red|" \
+        link = "https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=600x300&maptype=roadmap&markers=color:red|" \
                + usersPosition[1] + "," + usersPosition[2]
 
         colors = ["green|", "blue|", "yellow|"]
