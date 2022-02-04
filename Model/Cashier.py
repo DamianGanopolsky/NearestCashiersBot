@@ -11,7 +11,7 @@ class Cashier:
         self.address = data[5]
 
     def get_data(self):
-        return self.name, self.address
+        return self.name, self.address, self.latitude, self.longitude
 
     def calculate_geohash(self):
         return geohash.encode(self.latitude, self.longitude, 7)
