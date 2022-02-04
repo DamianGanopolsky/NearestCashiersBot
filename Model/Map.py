@@ -14,11 +14,11 @@ class Map:
     def __load(self, typeOfBank):
         with open('cajeros-automaticos.csv') as csv_file:
             csv_reader = csv.reader(csv_file)
-            line_count = 0
+            row_count = 0
 
             for row in csv_reader:
-                line_count += 1
-                if line_count == 1:
+                row_count += 1
+                if row_count == 1:
                     continue
                 if row[6] != 'CABA':
                     continue

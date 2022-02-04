@@ -8,7 +8,7 @@ class Cashier:
         self.latitude = data[2]
         self.name = data[3]
         self.type = data[4]
-        self.address = data[10] + ' ' + data[11]
+        self.address = data[5]
 
     def get_data(self):
         return self.name, self.address
