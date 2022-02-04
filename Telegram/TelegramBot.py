@@ -4,6 +4,7 @@ from Handlers.LinkCommand import FilterLink
 from Handlers.BanelcoCommand import BanelcoHandler
 from Model.NearestCashiers import NearestCashiers
 
+
 updater = Updater(token='5164707904:AAFXOrlRZpT1FpfVHPP7ak4QYfC-kafWAvA', use_context=True)
 dispatcher = updater.dispatcher
 
@@ -19,6 +20,7 @@ def echo(update: Update, context: CallbackContext):
 
 
 def run():
+
     nearest_cashiers = NearestCashiers()
     link_filter = FilterLink(nearest_cashiers)
     banelco_command = BanelcoHandler(nearest_cashiers)
