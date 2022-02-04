@@ -1,12 +1,31 @@
 from ProximityHashes import get_geohashes_neighbours
+import csv
+from Model.Cashier import Cashier
 
 
 class Map:
-    def __init__(self):
+    def __init__(self, typeOfBank):
         self.locations = {}
+        self.__load(typeOfBank)
 
-    def add_cashier(self, cashier):
+    def __add_cashier(self, cashier):
         self.locations.setdefault(cashier.calculate_geohash(), []).append(cashier)
+
+    def __load(self, typeOfBank):
+        with open('cajeros-automaticos.csv') as csv_file:
+            csv_reader = csv.reader(csv_file)
+            line_count = 0
+
+            for row in csv_reader:
+                line_count += 1
+                if line_count == 1:
+                    continue
+                if row[6] != 'CABA':
+                    continue
+                if row[4] != typeOfBank:
+                    continue
+                cashier = Cashier(row)
+                self.__add_cashier(cashier);
 
     def get_nearest_cashiers(self, queryLatitude, queryLongitude):
         proximity_geohashes = get_geohashes_neighbours(queryLatitude, queryLongitude, 500, 7).split(",")

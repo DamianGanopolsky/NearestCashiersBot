@@ -12,8 +12,8 @@ def echo(update: Update, context: CallbackContext):
     context.bot.send_message \
         (chat_id=update.effective_chat.id, text="""Hi! I'm the NearestCashiersBot.
         Available commands:
-        /link : lists the 3 nearest Link cashiers
-        /Banelco: lists the 3 nearest Banelco cashiers
+        /link [latitude] [longitude]: lists the 3 nearest Link cashiers
+        /banelco [latitude] [longitude]: lists the 3 nearest Banelco cashiers
         """
          )
 
@@ -21,7 +21,7 @@ def echo(update: Update, context: CallbackContext):
 def run():
     nearest_cashiers = NearestCashiers()
     link_filter = FilterLink(nearest_cashiers)
-    banelco_command = BanelcoHandler()
+    banelco_command = BanelcoHandler(nearest_cashiers)
 
     dispatcher.add_handler(MessageHandler(link_filter, link_filter.handlerLinkCommand))
     dispatcher.add_handler(MessageHandler(banelco_command, banelco_command.handlerBanelcoCommand))

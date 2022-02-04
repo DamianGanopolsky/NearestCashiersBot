@@ -1,5 +1,6 @@
 from geolib import geohash
 
+
 class Cashier:
 
     def __init__(self, data):
