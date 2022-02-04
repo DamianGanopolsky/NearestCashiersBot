@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import CallbackContext, Updater, MessageHandler, Filters
-from Handlers.LinkCommand import FilterLink
-from Handlers.BanelcoCommand import BanelcoHandler
+from Handlers.CommandLink import CommandLink
+from Handlers.CommandBanelco import CommandBanelco
 from Model.NearestCashiers import NearestCashiers
 
 
@@ -22,11 +22,11 @@ def echo(update: Update, context: CallbackContext):
 def run():
 
     nearest_cashiers = NearestCashiers()
-    link_filter = FilterLink(nearest_cashiers)
-    banelco_command = BanelcoHandler(nearest_cashiers)
+    link_filter = CommandLink(nearest_cashiers)
+    banelco_command = CommandBanelco(nearest_cashiers)
 
-    dispatcher.add_handler(MessageHandler(link_filter, link_filter.handlerLinkCommand))
-    dispatcher.add_handler(MessageHandler(banelco_command, banelco_command.handlerBanelcoCommand))
+    dispatcher.add_handler(MessageHandler(link_filter, link_filter.handle_command))
+    dispatcher.add_handler(MessageHandler(banelco_command, banelco_command.handle_command))
     dispatcher.add_handler(MessageHandler(Filters.text & (~Filters.command), echo))
 
     updater.start_polling()
