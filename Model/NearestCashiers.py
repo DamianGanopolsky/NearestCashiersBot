@@ -28,3 +28,6 @@ class NearestCashiers:
              """, (probability_of_extraction[i], nearest_cashiers[i][4]))
 
         conn.close()
+
+        self.link_geo_map.update()
+        self.banelco_geo_map.update()

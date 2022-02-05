@@ -8,9 +8,26 @@ from config import DATABASE_URL
 class Map:
     def __init__(self, typeOfBank):
         self.locations = {}
-        self.banks_without_extractions = []
+        self.banks_without_extractions = set([])
         self.__banks_without_extractions()
         self.__load(typeOfBank)
+
+    def update(self):
+        conn = psycopg2.connect(DATABASE_URL)
+        conn.set_session(autocommit=True)
+
+        cur = conn.cursor()
+
+        cur.execute("""
+            SELECT c.id FROM available_cashiers c WHERE c.extractions_done > 2.0;
+         """)
+
+        query_result = cur.fetchall()
+
+        for i in range(len(query_result)):
+            self.banks_without_extractions.add(int(query_result[i][0]))
+
+        conn.close()
 
     def __add_cashier(self, cashier):
         self.locations.setdefault(cashier.calculate_geohash(), []).append(cashier)
@@ -28,7 +45,7 @@ class Map:
         query_result = cur.fetchall()
 
         for i in range(len(query_result)):
-            self.banks_without_extractions.append(int(query_result[i][0]))
+            self.banks_without_extractions.add(int(query_result[i][0]))
 
         conn.close()
 
