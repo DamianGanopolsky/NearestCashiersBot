@@ -27,8 +27,8 @@ class Cashier:
         return geohash.encode(self.latitude, self.longitude, 7)
 
     def load_cashier(self):
-        with get_postgres_cursor() as cur:
-            cur.execute("""
+        with get_postgres_cursor() as cursor:
+            cursor.execute("""
                 UPDATE available_cashiers SET extractions_done 0 WHERE id = %s;
             """, (self.id,))
 
@@ -40,8 +40,8 @@ class Cashier:
     def is_available(self):
         return self.__can_extract_money() and self.__is_in_caba()
 
-    def is_used_with_prob(self, probabilityOfExtraction):
-        with get_postgres_cursor() as cur:
-            cur.execute("""
+    def use_cashier(self, probabilityOfExtraction):
+        with get_postgres_cursor() as cursor:
+            cursor.execute("""
                     UPDATE available_cashiers SET extractions_done = extractions_done + %s WHERE id = %s;
             """, (probabilityOfExtraction, self.id))

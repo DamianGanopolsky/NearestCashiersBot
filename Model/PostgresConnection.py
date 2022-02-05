@@ -10,7 +10,9 @@ def get_postgres_cursor():
         conn.set_session(autocommit=True)
         cur = conn.cursor()
         yield cur
+
     except Exception as exception:
         print(exception)
+
     finally:
         conn.close()

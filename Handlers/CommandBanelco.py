@@ -1,8 +1,10 @@
-from telegram.ext import CallbackContext, Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext import CallbackContext
 from telegram import Update
 from Handlers.CommandHandler import CommandHandler
 import re
 
+LATITUDE = 1
+LONGITUDE = 2
 
 class CommandBanelco(CommandHandler):
 
@@ -19,7 +21,7 @@ class CommandBanelco(CommandHandler):
         message_info = self.message.split(" ")
 
         nearest_cashiers = self.nearest_cashiers.get_nearest_banelco_cashiers(
-            float(message_info[1]), float(message_info[2]))
+            float(message_info[LATITUDE]), float(message_info[LONGITUDE]))
 
         context.bot.send_message(chat_id=update.effective_chat.id,
                                  text=super().reply_message_builder(nearest_cashiers)

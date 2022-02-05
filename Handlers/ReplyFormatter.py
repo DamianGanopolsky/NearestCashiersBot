@@ -1,3 +1,5 @@
+LATITUDE = 1
+LONGITUDE = 2
 
 class ReplyFormatter:
 
@@ -12,7 +14,7 @@ class ReplyFormatter:
 
     def image_link_reply(self, usersPosition, nearestCashiers):
         link = "https://maps.googleapis.com/maps/api/staticmap?zoom=15&size=600x300&maptype=roadmap&markers=color:red|" \
-               + usersPosition[1] + "," + usersPosition[2]
+               + usersPosition[LATITUDE] + "," + usersPosition[LONGITUDE]
 
         colors = ["green|", "blue|", "yellow|"]
         color_selector = 0

@@ -1,6 +1,9 @@
 from ProximityHashes import get_geohashes_neighbours
 from Model.Loader import Loader
 
+GEOHASH_PRECISION = 7
+GEOHASH_RADIUS = 500
+
 
 class Map:
     def __init__(self, typeOfBank):
@@ -16,9 +19,8 @@ class Map:
 
     def update(self):
         for cashier in self.cashiers:
-            if cashier.is_not_available() and (cashier.calculate_geohash() in self.locations)\
+            if cashier.is_not_available() and (cashier.calculate_geohash() in self.locations) \
                     and (cashier in self.locations[cashier.calculate_geohash()]):
-
                 self.locations[cashier.calculate_geohash()].remove(cashier)
 
     def load_cashiers(self):
@@ -27,7 +29,8 @@ class Map:
         self.__bulk_update()
 
     def get_nearest_cashiers(self, queryLatitude, queryLongitude):
-        proximity_geohashes = get_geohashes_neighbours(queryLatitude, queryLongitude, 500, 7).split(",")
+        proximity_geohashes = get_geohashes_neighbours \
+            (queryLatitude, queryLongitude, GEOHASH_RADIUS, GEOHASH_PRECISION).split(",")
         nearest_banks = []
         count = 0
         for proximityHash in proximity_geohashes:
@@ -38,5 +41,4 @@ class Map:
                     if count >= 3:
                         return nearest_banks
 
-        if count == 0:
-            return "There are no banks nearby"
+        return nearest_banks
