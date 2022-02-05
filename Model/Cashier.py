@@ -2,7 +2,6 @@ from geolib import geohash
 import psycopg2
 from config import DATABASE_URL
 
-
 class Cashier:
 
     def __init__(self, data, initialStatus):

@@ -42,11 +42,8 @@ class Loader:
 
                 if row[4] != typeOfBank:
                     continue
-
                 cashier = Cashier(row, self.banks_initial_extractions[int(row[0])])
-
                 cashiers.append(cashier)
-
                 if self.banks_initial_extractions[int(row[0])] >= 1000.0:
                     continue
 
