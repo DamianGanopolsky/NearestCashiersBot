@@ -3,6 +3,7 @@ import csv
 from Model.Cashier import Cashier
 import psycopg2
 
+
 class Map:
     def __init__(self, typeOfBank):
         self.locations = {}
@@ -34,10 +35,6 @@ class Map:
             self.banks_without_extractions.append(int(query_result[i][0]))
 
         conn.close()
-        print("Bancos sin extraccion:",self.banks_without_extractions)
-
-
-
 
     def __load(self, typeOfBank):
         with open('cajeros-automaticos.csv') as csv_file:
