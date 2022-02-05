@@ -14,7 +14,7 @@ class NearestCashiers:
     def get_nearest_banelco_cashiers(self, latitude, longitude):
         return self.banelco_geo_map.get_nearest_cashiers(latitude, longitude)
 
-    def update_database(self, nearest_cashiers):
+    def update_available_cashiers(self, cashiersUsed):
         conn = psycopg2.connect(DATABASE_URL)
         conn.set_session(autocommit=True)
 
@@ -22,10 +22,10 @@ class NearestCashiers:
 
         probability_of_extraction = [0.7, 0.2, 0.1]
 
-        for i in range(len(nearest_cashiers)):
+        for i in range(len(cashiersUsed)):
             cur.execute("""
                 UPDATE available_cashiers SET extractions_done = extractions_done + %s WHERE id = %s;
-             """, (probability_of_extraction[i], nearest_cashiers[i][4]))
+             """, (probability_of_extraction[i], cashiersUsed[i][4]))
 
         conn.close()
 

@@ -19,13 +19,15 @@ class Map:
         cur = conn.cursor()
 
         cur.execute("""
-            SELECT c.id FROM available_cashiers c WHERE c.extractions_done > 2.0;
+            SELECT c.id FROM available_cashiers c WHERE c.extractions_done > 1000.0;
          """)
 
         query_result = cur.fetchall()
 
         for i in range(len(query_result)):
             self.banks_without_extractions.add(int(query_result[i][0]))
+
+        #TODO: Sacar del map a los bancos que no tienen extracciones
 
         conn.close()
 
@@ -66,7 +68,7 @@ class Map:
                 if row[4] != typeOfBank:
                     continue
                 cashier = Cashier(row)
-                self.__add_cashier(cashier);
+                self.__add_cashier(cashier)
 
     def get_nearest_cashiers(self, queryLatitude, queryLongitude):
         proximity_geohashes = get_geohashes_neighbours(queryLatitude, queryLongitude, 500, 7).split(",")
