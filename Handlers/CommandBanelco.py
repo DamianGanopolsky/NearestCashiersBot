@@ -28,6 +28,4 @@ class CommandBanelco(CommandHandler):
                                photo=super().link_builder(message_info, nearest_cashiers))
 
         self.nearest_cashiers.update_available_cashiers(nearest_cashiers)
-        
 
-        # UPDATE DB -> PRIMEROS 3

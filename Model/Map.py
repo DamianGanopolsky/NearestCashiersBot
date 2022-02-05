@@ -8,46 +8,42 @@ from config import DATABASE_URL
 class Map:
     def __init__(self, typeOfBank):
         self.locations = {}
-        self.banks_without_extractions = set([])
-        self.__banks_without_extractions()
+        self.cashiers = []
+        self.banks_initial_extractions = {}
+        self.__cashiers_initial_extractions()
         self.__load(typeOfBank)
 
     def update(self):
+        for cashier in self.cashiers:
+            if cashier.is_not_available() and (cashier in self.locations[cashier.calculate_geohash()]):
+                self.locations[cashier.calculate_geohash()].remove(cashier)
+
+    def __bulk_update(self):
+        self.locations.clear()
+        for cashier in self.cashiers:
+            if cashier.is_available():
+                self.locations.setdefault(cashier.calculate_geohash(), []).append(cashier)
+
+    def load_cashiers(self):
+        for cashier in self.cashiers:
+            cashier.load_cashier()
+
+        self.__bulk_update()
+
+    def __cashiers_initial_extractions(self):
         conn = psycopg2.connect(DATABASE_URL)
         conn.set_session(autocommit=True)
 
         cur = conn.cursor()
 
         cur.execute("""
-            SELECT c.id FROM available_cashiers c WHERE c.extractions_done > 1000.0;
+            SELECT c.id,c.extractions_done FROM available_cashiers c;
          """)
 
         query_result = cur.fetchall()
 
-        for i in range(len(query_result)):
-            self.banks_without_extractions.add(int(query_result[i][0]))
-
-        #TODO: Sacar del map a los bancos que no tienen extracciones
-
-        conn.close()
-
-    def __add_cashier(self, cashier):
-        self.locations.setdefault(cashier.calculate_geohash(), []).append(cashier)
-
-    def __banks_without_extractions(self):
-        conn = psycopg2.connect(DATABASE_URL)
-        conn.set_session(autocommit=True)
-
-        cur = conn.cursor()
-
-        cur.execute("""
-            SELECT c.id FROM available_cashiers c WHERE c.extractions_done > 2.0;
-         """)
-
-        query_result = cur.fetchall()
-
-        for i in range(len(query_result)):
-            self.banks_without_extractions.add(int(query_result[i][0]))
+        for cashier in query_result:
+            self.banks_initial_extractions[cashier[0]] = cashier[1]
 
         conn.close()
 
@@ -62,13 +58,18 @@ class Map:
                     continue
                 if row[6] != 'CABA':
                     continue
-                if int(row[0]) in self.banks_without_extractions:
-                    continue
 
                 if row[4] != typeOfBank:
                     continue
-                cashier = Cashier(row)
-                self.__add_cashier(cashier)
+
+                cashier = Cashier(row, self.banks_initial_extractions[int(row[0])])
+
+                self.cashiers.append(cashier)
+
+                if self.banks_initial_extractions[int(row[0])] >= 1000.0:
+                    continue
+
+                self.locations.setdefault(cashier.calculate_geohash(), []).append(cashier)
 
     def get_nearest_cashiers(self, queryLatitude, queryLongitude):
         proximity_geohashes = get_geohashes_neighbours(queryLatitude, queryLongitude, 500, 7).split(",")
