@@ -1,6 +1,6 @@
 from Model.Map import Map
 import psycopg2
-
+from config import DATABASE_URL
 
 class NearestCashiers:
 
@@ -15,12 +15,7 @@ class NearestCashiers:
         return self.banelco_geo_map.get_nearest_cashiers(latitude, longitude)
 
     def update_database(self, nearest_cashiers):
-        conn = psycopg2.connect(dbname="de09lfgj5gf1st",
-                                user="djpqkqkqhawjtt",
-                                password="728a8912bc32051c4283efcd99398ceacb1e413da968a200f5ba8a2880be1f17",
-                                host="ec2-184-73-25-2.compute-1.amazonaws.com",
-                                port="5432"
-                                )
+        conn = psycopg2.connect(DATABASE_URL)
         conn.set_session(autocommit=True)
 
         cur = conn.cursor()
