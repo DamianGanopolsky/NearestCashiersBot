@@ -1,7 +1,5 @@
 from geolib import geohash
-import psycopg2
-from config import DATABASE_URL
-
+from Model.PostgresConnection import get_postgres_cursor
 
 class Cashier:
 
@@ -28,17 +26,12 @@ class Cashier:
         return geohash.encode(self.latitude, self.longitude, 7)
 
     def load_cashier(self):
-        try:
-            conn = psycopg2.connect(DATABASE_URL)
-            conn.set_session(autocommit=True)
-            cur = conn.cursor()
+        with get_postgres_cursor() as cur:
+
             cur.execute("""
                 UPDATE available_cashiers SET extractions_done 0 WHERE id = %s;
             """, (self.id,))
-        except Exception as ex:
-            print(ex)
-        finally:
-            conn.close()
+
         self.extractions = 0
 
     def is_not_available(self):
@@ -48,15 +41,8 @@ class Cashier:
         return self.__can_extract_money() & self.__is_in_caba()
 
     def is_used_with_prob(self, probabilityOfExtraction):
-        try:
-            conn = psycopg2.connect(DATABASE_URL)
-            conn.set_session(autocommit=True)
-            cur = conn.cursor()
-            cur.execute("""
-              UPDATE available_cashiers SET extractions_done = extractions_done + %s WHERE id = %s;
-      """, (probabilityOfExtraction, self.id))
+        with get_postgres_cursor() as cur:
 
-        except Exception as ex:
-            print(ex)
-        finally:
-            conn.close()
+            cur.execute("""
+                    UPDATE available_cashiers SET extractions_done = extractions_done + %s WHERE id = %s;
+            """, (probabilityOfExtraction, self.id))

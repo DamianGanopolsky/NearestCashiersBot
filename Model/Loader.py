@@ -2,7 +2,7 @@ import psycopg2
 from config import DATABASE_URL
 import csv
 from Model.Cashier import Cashier
-
+from Model.PostgresConnection import get_postgres_cursor
 
 class Loader:
 
@@ -10,21 +10,16 @@ class Loader:
         self.banks_initial_extractions = {}
 
     def __get_data_from_db(self):
-        try:
-            conn = psycopg2.connect(DATABASE_URL)
-            conn.set_session(autocommit=True)
-            cur = conn.cursor()
+        with get_postgres_cursor() as cur:
+
             cur.execute("""
                 SELECT c.id,c.extractions_done FROM available_cashiers c;
              """)
-        except Exception as ex:
-            print(ex)
-        finally:
             query_result = cur.fetchall()
-            for cashier in query_result:
-                self.banks_initial_extractions[cashier[0]] = cashier[1]
 
-            conn.close()
+        for cashier in query_result:
+            self.banks_initial_extractions[cashier[0]] = cashier[1]
+
 
     def __read_file(self, typeOfBank):
         cashiers = []

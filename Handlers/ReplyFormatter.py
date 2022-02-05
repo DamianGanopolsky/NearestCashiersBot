@@ -1,5 +1,4 @@
 
-
 class ReplyFormatter:
 
     def nearest_banks_reply(self, nearestCashiers):
