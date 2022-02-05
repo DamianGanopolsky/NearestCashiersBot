@@ -22,10 +22,10 @@ class NearestCashiers:
 
         probability_of_extraction = [0.7, 0.2, 0.1]
 
-        for i in range(len(cashiersUsed)):
-            cur.execute("""
-                UPDATE available_cashiers SET extractions_done = extractions_done + %s WHERE id = %s;
-             """, (probability_of_extraction[i], cashiersUsed[i][4]))
+        #for i in range(len(cashiersUsed)):
+         #   cur.execute("""
+          #      UPDATE available_cashiers SET extractions_done = extractions_done + %s WHERE id = %s;
+           #  """, (probability_of_extraction[i], cashiersUsed[i][4]))
 
         conn.close()
 

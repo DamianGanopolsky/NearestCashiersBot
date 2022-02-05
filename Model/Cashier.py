@@ -16,3 +16,6 @@ class Cashier:
 
     def calculate_geohash(self):
         return geohash.encode(self.latitude, self.longitude, 7)
+
+    def is_used_with_prob(self):
+        pass

@@ -6,7 +6,7 @@ class ReplyFormatter:
         reply = "Cashiers within 500m:"
 
         for cashier in nearestCashiers:
-            reply += "\n\n Bank name: " + cashier[0] + "\n Address: " + cashier[1]
+            reply += "\n\n Bank name: " + cashier.get_data()[0] + "\n Address: " + cashier.get_data()[1]
 
         return reply
 
@@ -18,7 +18,7 @@ class ReplyFormatter:
         colors = ["green|", "blue|", "yellow|"]
         color_selector = 0
         for cashier in nearestCashiers:
-            link += "&markers=color:" + colors[color_selector] + cashier[2] + "," + cashier[3]
+            link += "&markers=color:" + colors[color_selector] + cashier.get_data()[2] + "," + cashier.get_data()[3]
             color_selector += 1
 
         link += "&key=AIzaSyD2gw4CTUJCUw6-CmRDHWL2oZXbOdvwej8"

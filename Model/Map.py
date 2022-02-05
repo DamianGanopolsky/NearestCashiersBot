@@ -77,7 +77,7 @@ class Map:
         for proximityHash in proximity_geohashes:
             if proximityHash in self.locations:
                 for bank in self.locations[proximityHash]:
-                    nearest_banks.append(bank.get_data())
+                    nearest_banks.append(bank)
                     count += 1
                     if count >= 3:
                         return nearest_banks
