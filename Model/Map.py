@@ -4,18 +4,22 @@ from Model.Loader import Loader
 
 class Map:
     def __init__(self, typeOfBank):
-        self.cashiers, self.locations = Loader().load_map_resources(typeOfBank)
-
-    def update(self):
-        for cashier in self.cashiers:
-            if cashier.is_not_available() and (cashier in self.locations[cashier.calculate_geohash()]):
-                self.locations[cashier.calculate_geohash()].remove(cashier)
+        self.locations = {}
+        self.cashiers = Loader().load_map_cashiers(typeOfBank)
+        self.__bulk_update()
 
     def __bulk_update(self):
         self.locations.clear()
         for cashier in self.cashiers:
             if cashier.is_available():
                 self.locations.setdefault(cashier.calculate_geohash(), []).append(cashier)
+
+    def update(self):
+        for cashier in self.cashiers:
+            if cashier.is_not_available() and (cashier.calculate_geohash() in self.locations)\
+                    and (cashier in self.locations[cashier.calculate_geohash()]):
+
+                self.locations[cashier.calculate_geohash()].remove(cashier)
 
     def load_cashiers(self):
         for cashier in self.cashiers:
