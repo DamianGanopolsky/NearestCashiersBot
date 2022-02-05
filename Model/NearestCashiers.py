@@ -12,3 +12,6 @@ class NearestCashiers:
 
     def get_nearest_banelco_cashiers(self, latitude, longitude):
         return self.banelco_geo_map.get_nearest_cashiers(latitude, longitude)
+
+    def update_database(self,nearest_cashiers):
+        pass

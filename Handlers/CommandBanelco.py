@@ -1,4 +1,3 @@
-from telegram.ext import MessageFilter
 from telegram.ext import CallbackContext, Updater, CommandHandler, MessageHandler, Filters
 from telegram import Update
 from Handlers.CommandHandler import CommandHandler
@@ -27,3 +26,7 @@ class CommandBanelco(CommandHandler):
                                  )
         context.bot.send_photo(chat_id=update.effective_chat.id,
                                photo=super().link_builder(message_info, nearest_cashiers))
+
+        self.nearest_cashiers.update_database()
+
+        # UPDATE DB -> PRIMEROS 3
