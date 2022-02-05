@@ -1,6 +1,7 @@
 from geolib import geohash
 from Model.PostgresConnection import get_postgres_cursor
 
+
 class Cashier:
 
     def __init__(self, data, initialStatus):
@@ -27,7 +28,6 @@ class Cashier:
 
     def load_cashier(self):
         with get_postgres_cursor() as cur:
-
             cur.execute("""
                 UPDATE available_cashiers SET extractions_done 0 WHERE id = %s;
             """, (self.id,))
@@ -38,11 +38,10 @@ class Cashier:
         return not self.is_available()
 
     def is_available(self):
-        return self.__can_extract_money() & self.__is_in_caba()
+        return self.__can_extract_money() and self.__is_in_caba()
 
     def is_used_with_prob(self, probabilityOfExtraction):
         with get_postgres_cursor() as cur:
-
             cur.execute("""
                     UPDATE available_cashiers SET extractions_done = extractions_done + %s WHERE id = %s;
             """, (probabilityOfExtraction, self.id))
