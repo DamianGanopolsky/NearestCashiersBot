@@ -10,8 +10,9 @@ LONGITUDE = 2
 
 class CommandHandler(MessageFilter):
 
-    def __init__(self):
+    def __init__(self, nearestCashiersModel):
         self.reply_formatter = ReplyFormatter()
+        self.model = nearestCashiersModel
 
     @abstractmethod
     def filter(self, message):
@@ -28,5 +29,5 @@ class CommandHandler(MessageFilter):
         context.bot.send_photo(chat_id=update.effective_chat.id,
                                photo=self.reply_formatter.image_link_reply(message_info, nearest_cashiers))
 
-        self.nearest_cashiers.update_available_cashiers(nearest_cashiers)
+        self.model.update_available_cashiers(nearest_cashiers)
 

@@ -1,34 +1,22 @@
-from telegram import Update
-from telegram.ext import CallbackContext, Updater, MessageHandler, Filters, CommandHandler
+from telegram.ext import Updater, MessageHandler
 from Handlers.CommandLink import CommandLink
 from Handlers.CommandBanelco import CommandBanelco
 from Model.NearestCashiers import NearestCashiers
-
-updater = Updater(token='5164707904:AAFXOrlRZpT1FpfVHPP7ak4QYfC-kafWAvA', use_context=True)
-dispatcher = updater.dispatcher
-
-
-def echo(update: Update, context: CallbackContext):
-    context.bot.send_message \
-        (chat_id=update.effective_chat.id, text="""Hi! I'm the NearestCashiersBot.
-        Available commands:
-        /link [latitude] [longitude]: lists the 3 nearest Link cashiers
-        /banelco [latitude] [longitude]: lists the 3 nearest Banelco cashiers
-        """
-         )
-
-
+from Handlers.TextMessageHandler import TextMessage
 
 
 def run():
+    updater = Updater(token='5164707904:AAFXOrlRZpT1FpfVHPP7ak4QYfC-kafWAvA', use_context=True)
+    dispatcher = updater.dispatcher
+
     nearest_cashiers = NearestCashiers()
     link_command = CommandLink(nearest_cashiers)
     banelco_command = CommandBanelco(nearest_cashiers)
+    text_message_handler = TextMessage()
 
     dispatcher.add_handler(MessageHandler(link_command, link_command.handle_command))
     dispatcher.add_handler(MessageHandler(banelco_command, banelco_command.handle_command))
-    dispatcher.add_handler(MessageHandler(Filters.text & (~Filters.command), echo))
+    dispatcher.add_handler(MessageHandler(text_message_handler, text_message_handler.reply))
 
     updater.start_polling()
-
     updater.idle()
