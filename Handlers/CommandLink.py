@@ -1,5 +1,3 @@
-from telegram.ext import CallbackContext
-from telegram import Update
 from Handlers.Command import CommandHandler
 import re
 
@@ -12,10 +10,8 @@ class CommandLink(CommandHandler):
     def __init__(self, nearestCashiers):
         super().__init__()
         self.nearest_cashiers = nearestCashiers
-        self.message = ""
 
     def filter(self, message):
-        self.message = message.text
         return bool(re.search("/link", message.text, re.IGNORECASE))
 
     def get_nearest_cashiers(self, latitude, longitude):

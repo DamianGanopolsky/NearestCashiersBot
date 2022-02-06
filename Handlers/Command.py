@@ -18,7 +18,7 @@ class CommandHandler(MessageFilter):
         return
 
     def handle_command(self, update: Update, context: CallbackContext):
-        message_info = self.message.split(" ")
+        message_info = update.message.text.split(" ")
 
         nearest_cashiers = self.get_nearest_cashiers(message_info[LATITUDE], message_info[LONGITUDE])
 

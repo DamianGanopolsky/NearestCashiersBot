@@ -13,10 +13,9 @@ class Loader:
         self.banks_initial_extractions = {}
 
     def __get_extractions_from_db(self):
+        query = "SELECT c.id,c.extractions_done FROM available_cashiers c;"
         with get_postgres_cursor() as cursor:
-            cursor.execute("""
-                SELECT c.id,c.extractions_done FROM available_cashiers c;
-             """)
+            cursor.execute(query)
             query_result = cursor.fetchall()
 
         for cashier in query_result:

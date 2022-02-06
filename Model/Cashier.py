@@ -4,6 +4,7 @@ from constants import GEOHASH_PRECISION
 
 EXTRACTION_LIMIT = 1000.0
 
+
 class Cashier:
 
     def __init__(self, data, initialStatus):
@@ -26,10 +27,9 @@ class Cashier:
         return geohash.encode(self.latitude, self.longitude, GEOHASH_PRECISION)
 
     def load_cashier(self):
+        query = "UPDATE available_cashiers SET extractions_done 0 WHERE id = %s;"
         with get_postgres_cursor() as cursor:
-            cursor.execute("""
-                UPDATE available_cashiers SET extractions_done 0 WHERE id = %s;
-            """, (self.id,))
+            cursor.execute(query, (self.id,))
 
         self.extractions = 0
 
@@ -52,7 +52,6 @@ class Cashier:
         return self.longitude
 
     def use_cashier(self, probabilityOfExtraction):
+        query = "UPDATE available_cashiers SET extractions_done = extractions_done + %s WHERE id = %s;"
         with get_postgres_cursor() as cursor:
-            cursor.execute("""
-                    UPDATE available_cashiers SET extractions_done = extractions_done + %s WHERE id = %s;
-            """, (probabilityOfExtraction, self.id))
+            cursor.execute(query, (probabilityOfExtraction, self.id))
