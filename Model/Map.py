@@ -1,7 +1,7 @@
 from ProximityHashes import get_geohashes_neighbours
 from Model.Loader import Loader
+from constants import GEOHASH_PRECISION
 
-GEOHASH_PRECISION = 7
 GEOHASH_RADIUS = 500
 
 

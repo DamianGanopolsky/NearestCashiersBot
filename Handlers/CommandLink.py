@@ -2,8 +2,10 @@ from telegram.ext import CallbackContext
 from telegram import Update
 from Handlers.CommandHandler import CommandHandler
 import re
+
 LATITUDE = 1
 LONGITUDE = 2
+
 
 class CommandLink(CommandHandler):
 

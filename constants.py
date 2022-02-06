@@ -9,3 +9,5 @@ FIELDS = {
 }
 
 DATASET_FILE = "cajeros-automaticos.csv"
+
+GEOHASH_PRECISION = 7

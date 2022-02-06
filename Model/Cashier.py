@@ -1,6 +1,8 @@
 from geolib import geohash
 from Model.PostgresConnection import get_postgres_cursor
+from constants import GEOHASH_PRECISION
 
+EXTRACTION_LIMIT = 1000.0
 
 class Cashier:
 
@@ -18,13 +20,13 @@ class Cashier:
         return self.state == "CABA"
 
     def __can_extract_money(self):
-        return self.extractions < 1000.0
+        return self.extractions < EXTRACTION_LIMIT
 
     def get_data(self):
         return self.name, self.address, self.latitude, self.longitude, self.id
 
     def calculate_geohash(self):
-        return geohash.encode(self.latitude, self.longitude, 7)
+        return geohash.encode(self.latitude, self.longitude, GEOHASH_PRECISION)
 
     def load_cashier(self):
         with get_postgres_cursor() as cursor:
