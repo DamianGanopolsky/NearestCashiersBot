@@ -18,16 +18,7 @@ class CommandLink(CommandHandler):
         self.message = message.text
         return bool(re.search("/link", message.text, re.IGNORECASE))
 
-    def handle_command(self, update: Update, context: CallbackContext):
-        message_info = self.message.split(" ")
+    def get_nearest_cashiers(self, latitude, longitude):
+        return self.nearest_cashiers.get_nearest_link_cashiers(
+            float(latitude), float(longitude))
 
-        nearest_cashiers = self.nearest_cashiers.get_nearest_link_cashiers(
-            float(message_info[LATITUDE]), float(message_info[LONGITUDE]))
-
-        context.bot.send_message(chat_id=update.effective_chat.id,
-                                 text=super().reply_message_builder(nearest_cashiers)
-                                 )
-        context.bot.send_photo(chat_id=update.effective_chat.id,
-                               photo=super().link_builder(message_info, nearest_cashiers))
-
-        self.nearest_cashiers.update_available_cashiers(nearest_cashiers)

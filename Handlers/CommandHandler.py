@@ -1,8 +1,11 @@
 from telegram.ext import MessageFilter
-from telegram.ext import CallbackContext, Updater, CommandHandler, MessageHandler, Filters
+from telegram.ext import CallbackContext
 from telegram import Update
 from abc import abstractmethod
 from Handlers.ReplyFormatter import ReplyFormatter
+
+LATITUDE = 1
+LONGITUDE = 2
 
 
 class CommandHandler(MessageFilter):
@@ -14,12 +17,16 @@ class CommandHandler(MessageFilter):
     def filter(self, message):
         return
 
-    @abstractmethod
     def handle_command(self, update: Update, context: CallbackContext):
-        return
+        message_info = self.message.split(" ")
 
-    def reply_message_builder(self, nearestCashiers):
-        return self.reply_formatter.nearest_banks_reply(nearestCashiers)
+        nearest_cashiers = self.get_nearest_cashiers(message_info[LATITUDE], message_info[LONGITUDE])
 
-    def link_builder(self, usersPosition, nearestCashiers):
-        return self.reply_formatter.image_link_reply(usersPosition,nearestCashiers)
+        context.bot.send_message(chat_id=update.effective_chat.id,
+                                 text=self.reply_formatter.nearest_banks_reply(nearest_cashiers))
+
+        context.bot.send_photo(chat_id=update.effective_chat.id,
+                               photo=self.reply_formatter.image_link_reply(message_info, nearest_cashiers))
+
+        self.nearest_cashiers.update_available_cashiers(nearest_cashiers)
+
