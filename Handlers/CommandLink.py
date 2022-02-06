@@ -1,6 +1,6 @@
 from telegram.ext import CallbackContext
 from telegram import Update
-from Handlers.CommandHandler import CommandHandler
+from Handlers.Command import CommandHandler
 import re
 
 LATITUDE = 1

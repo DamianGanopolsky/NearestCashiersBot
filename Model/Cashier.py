@@ -22,9 +22,6 @@ class Cashier:
     def __can_extract_money(self):
         return self.extractions < EXTRACTION_LIMIT
 
-    def get_data(self):
-        return self.name, self.address, self.latitude, self.longitude, self.id
-
     def calculate_geohash(self):
         return geohash.encode(self.latitude, self.longitude, GEOHASH_PRECISION)
 
@@ -41,6 +38,18 @@ class Cashier:
 
     def is_available(self):
         return self.__can_extract_money() and self.__is_in_caba()
+
+    def get_bank_name(self):
+        return self.name
+
+    def get_address(self):
+        return self.address
+
+    def get_latitude(self):
+        return self.latitude
+
+    def get_longitude(self):
+        return self.longitude
 
     def use_cashier(self, probabilityOfExtraction):
         with get_postgres_cursor() as cursor:
