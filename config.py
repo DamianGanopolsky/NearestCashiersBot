@@ -4,8 +4,5 @@ POSTGRES_PASSWORD = "728a8912bc32051c4283efcd99398ceacb1e413da968a200f5ba8a2880b
 POSTGRES_HOST = "ec2-184-73-25-2.compute-1.amazonaws.com"
 POSTGRES_PORT = "5432"
 
-# DATABASE_URL = "dbname=" + POSTGRES_DB + ",user=" + POSTGRES_USER + ",password=" + POSTGRES_PASSWORD + ",host=" \
-#              + POSTGRES_HOST + ",port=" + POSTGRES_PORT
-
 DATABASE_URL = "dbname=%s user=%s password=%s host=%s port=%s" % (POSTGRES_DB, POSTGRES_USER, POSTGRES_PASSWORD
                                                                   , POSTGRES_HOST, POSTGRES_PORT)

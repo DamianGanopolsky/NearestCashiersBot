@@ -1,4 +1,4 @@
-from ProximityHashes import get_geohashes_neighbours
+from Model.ProximityHashes import get_geohashes_neighbours
 from Model.Loader import Loader
 from constants import GEOHASH_PRECISION
 
@@ -11,6 +11,8 @@ class Map:
         self.cashiers = Loader().load_map_cashiers(typeOfBank)
         self.__bulk_update()
 
+    # Llena el diccionario(locations) desde cero con los geohashes de los cajeros disponibles para
+    # hacer extracciones
     def __bulk_update(self):
         self.locations.clear()
         for cashier in self.cashiers:

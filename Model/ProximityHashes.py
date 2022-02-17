@@ -1,6 +1,7 @@
 from geolib import geohash
 import math
 
+
 def in_circle_check(latitude, longitude, centre_lat, centre_lon, radius):
     x_diff = longitude - centre_lon
     y_diff = latitude - centre_lat
