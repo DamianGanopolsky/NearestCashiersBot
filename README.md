@@ -6,7 +6,7 @@ Geohash: https://en.wikipedia.org/wiki/Geohash
 
 Technologies: Python, PostgreSQL
 
-
+## Bot Screenshots  
 ![alt text](./Screenshot1.jpeg)
 ![alt text](./Screenshot2.jpeg)
 
