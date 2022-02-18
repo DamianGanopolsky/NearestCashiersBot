@@ -4,7 +4,7 @@ Telegram bot that sends 3 cashiers within 500m from your current location(you mu
 
 Geohash: https://en.wikipedia.org/wiki/Geohash
 
-Technologies: Python, PostgreSQL
+Technologies: Python, PostgreSQL, Heroku
 
 ## Bot Screenshots  
 ![alt text](./Screenshot1.jpeg)
